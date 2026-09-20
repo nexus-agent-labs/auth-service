@@ -1,15 +1,18 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/nexus_auth
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
+  application:
+    name: auth-service
+  profiles:
+    default: local
 
-    properties:
-      hibernate:
-      format_sql: true
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
