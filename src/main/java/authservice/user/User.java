@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
-@Entity(name = "users")
+@Entity
+@Table(name = "user_accounts")
 class User {
 
     @Id
