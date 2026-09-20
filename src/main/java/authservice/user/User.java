@@ -15,11 +15,14 @@ class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    @Column(name = "username")
+    private String username;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
