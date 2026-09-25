@@ -1,12 +1,13 @@
 package authservice.user.dto;
 
-import authservice.user.User;
 import lombok.Data;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import authservice.user.domain.User;
 
 @Data 
 public class SignUpRequest {

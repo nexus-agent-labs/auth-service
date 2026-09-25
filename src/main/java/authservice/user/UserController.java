@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import authservice.user.dto.LoginRequest;
 import authservice.user.dto.SignUpRequest;
 import lombok.AllArgsConstructor;
 import java.util.Map;
@@ -25,5 +26,18 @@ public class UserController {
             .body(Map.of("message", "Signup successful"));
     }
     
-    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest dto) {
+        boolean validationResult = userService.login(dto);
+        
+        if (validationResult == true) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(Map.of("message", "Email verification successful"));
+        } else {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("message", "Invalid email or password"));
+        }
+    }
 }
