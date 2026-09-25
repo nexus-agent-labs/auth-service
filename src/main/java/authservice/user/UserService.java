@@ -1,8 +1,5 @@
 package authservice.user;
 
-import authservice.user.domain.User;
-
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +24,9 @@ public class UserService {
     }
 
     public boolean login(LoginRequest dto) {
-        User user = userRepository.findByEmail(dto.getEmail())
-            .orElseThrow(() -> new UsernameNotFoundException("email not found"));
-        
-        return user.getPasswordHash().equals(dto.getPassword());
+        return userRepository.findByEmail(dto.getEmail())
+            .map(user -> passwordEncoder.matches(dto.getPassword(), user.getPasswordHash()))
+            .orElse(false);
     }
     
 }
