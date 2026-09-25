@@ -7,31 +7,27 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 
 
-@Configuration 
-@EnableWebSecurity 
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/login").permitAll()
                 .requestMatchers("/api/v1/auth/signup").permitAll()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults())
-            .formLogin(Customizer.withDefaults());
+                .anyRequest().authenticated());
 
         return http.build();
     }
 
-    @Bean 
-    public PasswordEncoder encoder() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

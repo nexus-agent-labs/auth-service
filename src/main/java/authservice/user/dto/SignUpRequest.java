@@ -2,24 +2,27 @@ package authservice.user.dto;
 
 import authservice.user.User;
 import lombok.Data;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDateTime;
 
 @Data 
 public class SignUpRequest {
     
+    @NotBlank
+    @Email
     private String email;
-    private String username;
+
+    @NotBlank
+    @Size(min = 8, max = 72)
     private String password;
-    private LocalDateTime createdAt;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
             .email(email)
-            .username(username)
-            .password(passwordEncoder.encode(password))
+            .passwordHash(passwordEncoder.encode(password))
             .build();
     }
 }
