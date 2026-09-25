@@ -4,12 +4,17 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "user_accounts")
-class User {
+@Table(name = "users")
+@Data 
+@Builder 
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,18 +24,10 @@ class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
-    private String passwordHash;
+    private String password;
 
     @Column(name = "username")
     private String username;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private AccountStatus accountStatus = AccountStatus.ACTIVE;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Role role = Role.USER;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -39,16 +36,4 @@ class User {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    enum AccountStatus {
-        ACTIVE,
-        SUSPENDED,
-        LOCKED,
-        DEACTIVATED
-    }
-
-    enum Role {
-        USER,
-        ADMIN
-    }
 }
