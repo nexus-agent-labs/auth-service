@@ -2,32 +2,29 @@ package authservice.user;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "user_accounts")
-class User {
+@Table(name = "users")
+@Getter
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private AccountStatus accountStatus = AccountStatus.ACTIVE;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Role role = Role.USER;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -37,15 +34,9 @@ class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    enum AccountStatus {
-        ACTIVE,
-        SUSPENDED,
-        LOCKED,
-        DEACTIVATED
-    }
-
-    enum Role {
-        USER,
-        ADMIN
+    @Builder
+    private User(String email, String passwordHash) {
+        this.email = email;
+        this.passwordHash = passwordHash;
     }
 }
