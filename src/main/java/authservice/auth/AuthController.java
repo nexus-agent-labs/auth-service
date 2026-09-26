@@ -1,12 +1,12 @@
-package authservice.user;
+package authservice.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import authservice.user.dto.LoginRequest;
-import authservice.user.dto.SignUpRequest;
+import authservice.auth.dto.LoginRequest;
+import authservice.auth.dto.SignUpRequest;
 import lombok.AllArgsConstructor;
 import java.util.Map;
 
@@ -14,13 +14,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth") 
 @AllArgsConstructor 
-public class UserController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpRequest dto) {
-        userService.signup(dto);
+        authService.signup(dto);
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(Map.of("message", "Signup successful"));
@@ -28,7 +28,7 @@ public class UserController {
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest dto) {
-        boolean validationResult = userService.login(dto);
+        boolean validationResult = authService.login(dto);
         
         if (validationResult == true) {
         return ResponseEntity

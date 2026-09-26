@@ -1,4 +1,4 @@
-package authservice.user.dto;
+package authservice.auth.dto;
 
 import lombok.Data;
 import jakarta.validation.constraints.Email;

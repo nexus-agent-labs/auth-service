@@ -1,30 +1,30 @@
-package authservice.user;
+package authservice.auth;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import authservice.exception.DuplicateEmailException;
-import authservice.user.dto.*;
+import authservice.auth.dto.*;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor 
-public class UserService {
+public class AuthService {
 
-    private UserRepository userRepository;
+    private AuthRepository authRepository;
     private PasswordEncoder passwordEncoder;
 
     public void signup(SignUpRequest dto) {
 
-        if (userRepository.existsByEmail(dto.getEmail())) {
+        if (authRepository.existsByEmail(dto.getEmail())) {
             throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
         }
 
-        userRepository.save(dto.toUser(passwordEncoder));
+        authRepository.save(dto.toUser(passwordEncoder));
     }
 
     public boolean login(LoginRequest dto) {
-        return userRepository.findByEmail(dto.getEmail())
+        return authRepository.findByEmail(dto.getEmail())
             .map(user -> passwordEncoder.matches(dto.getPassword(), user.getPasswordHash()))
             .orElse(false);
     }
