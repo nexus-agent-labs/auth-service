@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import authservice.auth.dto.LoginRequest;
 import authservice.auth.dto.SignUpRequest;
+import authservice.jwt.TokenResponse;
 import lombok.AllArgsConstructor;
 import java.util.Map;
 
@@ -27,17 +28,9 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest dto) {
-        boolean validationResult = authService.login(dto);
-        
-        if (validationResult == true) {
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(Map.of("message", "Email verification successful"));
-        } else {
-        return ResponseEntity
-            .status(HttpStatus.UNAUTHORIZED)
-            .body(Map.of("message", "Invalid email or password"));
-        }
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
+        TokenResponse response = authService.login(request);
+
+        return ResponseEntity.ok(response);
     }
 }
